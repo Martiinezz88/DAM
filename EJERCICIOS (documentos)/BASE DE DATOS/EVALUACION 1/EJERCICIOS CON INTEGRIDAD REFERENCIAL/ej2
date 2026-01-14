@@ -1,0 +1,28 @@
+CREATE TABLE libro (
+  libro_id NUMBER CONSTRAINT pk_libro PRIMARY KEY,
+  titulo VARCHAR2(200) NOT NULL,
+  anio_publicacion NUMBER(4),
+  CONSTRAINT chk_libro_anio CHECK (anio_publicacion BETWEEN 1900 AND 2100)
+);
+
+CREATE TABLE ejemplar (
+  ejemplar_id NUMBER CONSTRAINT pk_ejemplar PRIMARY KEY,
+  libro_id NUMBER NOT NULL,
+  codigo_barra VARCHAR2(50) NOT NULL,
+  estado VARCHAR2(20) NOT NULL,
+  CONSTRAINT uk_ejemplar_cod UNIQUE (codigo_barra),
+  CONSTRAINT fk_ejemplar_libro FOREIGN KEY (libro_id)
+    REFERENCES libro(libro_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE prestamo (
+  prestamo_id NUMBER CONSTRAINT pk_prestamo PRIMARY KEY,
+  ejemplar_id NUMBER NOT NULL,
+  alumno_id NUMBER NOT NULL,
+  fecha_inicio DATE NOT NULL,
+  fecha_fin DATE,
+  CONSTRAINT fk_prestamo_ejemplar FOREIGN KEY (ejemplar_id)
+    REFERENCES ejemplar(ejemplar_id)
+    ON DELETE CASCADE
+);

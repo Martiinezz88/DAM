@@ -1,0 +1,12 @@
+# Ignorar configuraciones locales de Obsidian
+.obsidian/workspace.json
+.obsidian/plugins/*/data.json
+.obsidian/graph.json
+
+# Ignorar configuraciones de VS Code
+.vscode/
+
+# Ignorar archivos temporales y del sistema
+*.DS_Store
+*.log
+Thumbs.db

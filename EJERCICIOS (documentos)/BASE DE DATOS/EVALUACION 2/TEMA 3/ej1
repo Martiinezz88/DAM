@@ -1,0 +1,24 @@
+CREATE TABLE departamento (
+  dep_id NUMBER CONSTRAINT pk_departamento PRIMARY KEY,
+  nombre VARCHAR2(100) NOT NULL,
+  CONSTRAINT uk_departamento_nombre UNIQUE (nombre)
+);
+
+CREATE TABLE profesor (
+  prof_id NUMBER CONSTRAINT pk_profesor PRIMARY KEY,
+  nombre VARCHAR2(100) NOT NULL,
+  dep_id NUMBER NOT NULL,
+  CONSTRAINT fk_prof_dep FOREIGN KEY (dep_id)
+    REFERENCES departamento(dep_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE grupo (
+  grupo_id NUMBER CONSTRAINT pk_grupo PRIMARY KEY,
+  codigo VARCHAR2(20) NOT NULL,
+  tutor_id NUMBER,
+  CONSTRAINT uk_grupo_codigo UNIQUE (codigo),
+  CONSTRAINT fk_grupo_tutor FOREIGN KEY (tutor_id)
+    REFERENCES profesor(prof_id)
+    ON DELETE CASCADE
+);

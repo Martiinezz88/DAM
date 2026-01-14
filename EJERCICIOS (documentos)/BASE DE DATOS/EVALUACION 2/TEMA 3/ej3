@@ -1,0 +1,37 @@
+CREATE TABLE curso_form (
+  curso_id NUMBER CONSTRAINT pk_curso_form PRIMARY KEY,
+  nombre VARCHAR2(150) NOT NULL,
+  descripcion VARCHAR2(500),
+  horas NUMBER(4,1),
+  CONSTRAINT chk_curso_form_horas CHECK (horas > 0)
+);
+
+CREATE TABLE edicion_curso (
+  edicion_id NUMBER CONSTRAINT pk_edicion_curso PRIMARY KEY,
+  curso_id NUMBER NOT NULL,
+  fecha_ini DATE NOT NULL,
+  fecha_fin DATE,
+  CONSTRAINT fk_edicion_curso_curso FOREIGN KEY (curso_id)
+    REFERENCES curso_form(curso_id)
+    ON DELETE CASCADE,
+  CONSTRAINT chk_edicion_fechas CHECK (fecha_fin IS NULL OR fecha_fin >= fecha_ini)
+);
+
+CREATE TABLE usuario_form (
+  usr_id NUMBER CONSTRAINT pk_usuario_form PRIMARY KEY,
+  nombre VARCHAR2(100) NOT NULL,
+  email VARCHAR2(200) NOT NULL,
+  CONSTRAINT uk_usuario_form_email UNIQUE (email)
+);
+
+CREATE TABLE matricula_form (
+  matr_id NUMBER CONSTRAINT pk_matricula_form PRIMARY KEY,
+  edicion_id NUMBER NOT NULL,
+  usr_id NUMBER NOT NULL,
+  fecha_mat DATE DEFAULT SYSDATE,
+  CONSTRAINT fk_matr_form_edicion FOREIGN KEY (edicion_id)
+    REFERENCES edicion_curso(edicion_id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_matr_form_usr FOREIGN KEY (usr_id)
+    REFERENCES usuario_form(usr_id)
+);
